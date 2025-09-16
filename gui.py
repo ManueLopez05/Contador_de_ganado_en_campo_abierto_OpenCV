@@ -42,7 +42,15 @@ class App:
         btnConteo.grid(column=0, row=3,padx=5,pady=10)
 
     def _get_image_path(self):
-        pass
+        self.image_path = filedialog.askopenfilename(
+            filetypes=[
+                ("image", ".jpg"),
+                ("iamge", ".jpeg"),
+                ("image", ".png")
+            ]
+        )
+        print(str(type(self.image_path))+" - "+self.image_path + "modulo gui.py método _get_path()")
+
 
     def _count_cows(self):
         pass

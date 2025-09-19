@@ -10,7 +10,7 @@ def cv2_a_imagenTk(imagen_cv2):
     return imagen_tk
 
 
-def redimensionar_imagen_cv2(imagen_cv2, size):
+def ajustar_imagen_cv2(imagen_cv2, size):
 
    imagen_cv2_redimensionada = cv2.resize(imagen_cv2,size,interpolation=cv2.INTER_AREA)
    imagen_cv2_redimensionada = cv2.cvtColor(imagen_cv2_redimensionada,cv2.COLOR_BGR2RGB)

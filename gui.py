@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, filedialog
+from image_processor_cv2 import contar_contornos, obtener_imagen_y_mascara_binarizada
 
 class App:
 
@@ -19,19 +20,19 @@ class App:
 
     def _create_widgets(self):
         #Contenedor de la imagen original
-        labelImagenEntrada = ttk.Label(self.root)
-        labelImagenEntrada.grid(column=0,row=2,padx=50)
+        self.labelImagenEntrada = ttk.Label(self.root)
+        self.labelImagenEntrada.grid(column=0,row=2,padx=50)
 
         #Seleccinar densidad de pixeles para contornos
-        sliderToleracia = ttk.Scale(self.root, from_=50, to=300, orient="horizontal")
-        sliderToleracia.grid(column=0, row=5,padx=5)
+        self.sliderToleracia = ttk.Scale(self.root, from_=50, to=300, orient="horizontal")
+        self.sliderToleracia.grid(column=0, row=5,padx=5)
 
         labelSlider = ttk.Label(self.root, text="Selecciona la densidad de pixeles")
         labelSlider.grid(column=0, row=4,padx=5)
 
         #Imagen con conteo
-        labelImagenSalida = ttk.Label(self.root)
-        labelImagenSalida.grid(column=1,row=1, rowspan=6)
+        self.labelImagenSalida = ttk.Label(self.root)
+        self.labelImagenSalida.grid(column=1,row=1, rowspan=6)
 
 
         btn = ttk.Button(self.root, text="Seleccionar imagen", width=25, command=self._get_image_path)
@@ -53,8 +54,17 @@ class App:
 
 
     def _count_cows(self):
-        pass
+        imagen, mascara_binarizada, self.imgaen_vista_previa = obtener_imagen_y_mascara_binarizada(self.image_path)
 
+        self.cabezas_de_ganado, self.imagen_con_conteo = contar_contornos(imagen,mascara_binarizada,self.sliderToleracia.get())
+        self._mostrar_imagenes()
+
+    def _mostrar_imagenes(self):
+        self.labelImagenEntrada.configure(image=self.imgaen_vista_previa)
+        self.labelImagenSalida.configure(image=self.imagen_con_conteo)
+        labelInfo = ttk.Label(self.root,text=f"Cantidad de vacas = {self.cabezas_de_ganado}")
+        labelInfo.grid(column=1,row=0,padx=5,pady=5)
+    
 def run_app():
     root = tk.Tk()
     app = App(root)
